@@ -1,4 +1,5 @@
 #include <windows.h>
+#include "execute_assembly.h"
 #include "headers/tcg.h"
 
 WINBASEAPI HMODULE WINAPI KERNEL32$LoadLibraryA(LPCSTR lpLibFileName);
@@ -34,8 +35,6 @@ _ASSEMBLY * findAppendedAssembly() {
     return (_ASSEMBLY *)&__DLLDATA__;
 }
 
-typedef HRESULT (*CLR_PICO)(char *assembly, size_t assembly_len, WCHAR *argv[], int argc);
-
 void run_clr_pico(WIN32FUNCS * funcs, char * srcPico, WCHAR *assemblyArgs[], size_t assemblyArgLen) {
     char        * dstCode;
     char        * dstData;
@@ -50,7 +49,7 @@ void run_clr_pico(WIN32FUNCS * funcs, char * srcPico, WCHAR *assemblyArgs[], siz
     PicoLoad((IMPORTFUNCS *)funcs, srcPico, dstCode, dstData);
   
     /* And, we can call our pico entry point */
-    CLR_PICO entryPoint = (CLR_PICO) PicoEntryPoint(srcPico, dstCode);
+    EXECUTE_ASSEMBLY_PICO entryPoint = (EXECUTE_ASSEMBLY_PICO) PicoEntryPoint(srcPico, dstCode);
     
     _ASSEMBLY *assembly = findAppendedAssembly();
     

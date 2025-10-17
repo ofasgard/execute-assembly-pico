@@ -19,7 +19,7 @@ The example runner is written to `out/runner.bin`, and it invokes the appended R
 The signature of the PICO's entrypoint is:
 
 ```c
-HRESULT CLR_PICO(char *raw_assembly, size_t assembly_len, WCHAR *argv[], int argc);
+HRESULT (*EXECUTE_ASSEMBLY_PICO)(char *assembly, size_t assembly_len, WCHAR *argv[], int argc);
 ```
 
 The first two arguments should contain a pointer to a raw .NET assembly and its size. The second two arguments are used to pass string parameters to the assembly when it is invoked.
