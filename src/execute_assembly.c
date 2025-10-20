@@ -208,12 +208,24 @@ void test_get_runtime() {
 	ASSERT(result == S_OK, "test_get_runtime: Could not retrieve the runtime interface.");
 }
 
+void test_load_runtime() {
+	HRESULT result;
+	AssemblyData assemblyData = { 0 };
+	result = get_clr(&assemblyData);
+	ASSERT(result == S_OK, "test_load_runtime: Could not retrieve the CLR.");
+	result = get_runtime(&assemblyData);
+	ASSERT(result == S_OK, "test_load_runtime: Could not retrieve the runtime interface.");
+	result = load_runtime(&assemblyData);
+	ASSERT(result == S_OK, "test_load_runtime: Could not load an initialise the hosted CLR.");
+}
+
 HRESULT go_tests(char *raw_assembly, size_t assembly_len, WCHAR *argv[], int argc) {
 	TESTFUNC tests[] = {
 		(TESTFUNC) test_get_clr,
-		(TESTFUNC) test_get_runtime
+		(TESTFUNC) test_get_runtime,
+		(TESTFUNC) test_load_runtime
 	};
-	runTests(tests, 2);
+	runTests(tests, 3);
 	return S_OK;
 }
 #endif
