@@ -2,6 +2,8 @@
 #include <oleauto.h>
 #include "headers/clr.h"
 #include "headers/guid.h"
+#include "headers/tcg.h"
+#include "headers/cpltest.h"
   
 WINBASEAPI HRESULT MSCOREE$CLRCreateInstance(REFCLSID clsid, REFIID riid, LPVOID *ppInterface);
 WINBASEAPI SAFEARRAY * OLEAUT32$SafeArrayCreate(VARTYPE vt, UINT cDims, SAFEARRAYBOUND *rgsabound);
@@ -156,7 +158,7 @@ void release_assembly(AssemblyData* assemblyData) {
 	if (assemblyData->metaHost != NULL) { assemblyData->metaHost->lpVtbl->Release(assemblyData->metaHost); }
 }
 
-HRESULT go(char *raw_assembly, size_t assembly_len, WCHAR *argv[], int argc) {
+HRESULT go_pico(char *raw_assembly, size_t assembly_len, WCHAR *argv[], int argc) {
 	HRESULT result;
 	AssemblyData assemblyData = { 0 };
 
@@ -189,3 +191,37 @@ HRESULT go(char *raw_assembly, size_t assembly_len, WCHAR *argv[], int argc) {
 	return result;
 }
 
+#ifdef CPLTESTS
+void test_get_clr() {
+	HRESULT result;
+	AssemblyData assemblyData = { 0 };
+	result = get_clr(&assemblyData);
+	ASSERT(result == S_OK, "test_get_clr: Could not retrieve the CLR.");
+}
+
+void test_get_runtime() {
+	HRESULT result;
+	AssemblyData assemblyData = { 0 };
+	result = get_clr(&assemblyData);
+	ASSERT(result == S_OK, "test_get_runtime: Could not retrieve the CLR.");
+	result = get_runtime(&assemblyData);
+	ASSERT(result == S_OK, "test_get_runtime: Could not retrieve the runtime interface.");
+}
+
+HRESULT go_tests(char *raw_assembly, size_t assembly_len, WCHAR *argv[], int argc) {
+	TESTFUNC tests[] = {
+		(TESTFUNC) test_get_clr,
+		(TESTFUNC) test_get_runtime
+	};
+	runTests(tests, 2);
+	return S_OK;
+}
+#endif
+
+HRESULT go(char *raw_assembly, size_t assembly_len, WCHAR *argv[], int argc) {
+	#ifdef CPLTESTS
+	return go_tests(raw_assembly, assembly_len, argv, argc);
+	#else
+	return go_pico(raw_assembly, assembly_len, argv, argc);
+	#endif
+}
