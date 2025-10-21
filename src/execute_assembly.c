@@ -220,12 +220,12 @@ void test_load_runtime() {
 }
 
 HRESULT go_tests() {
-	TESTFUNC tests[] = {
-		(TESTFUNC) test_get_clr,
-		(TESTFUNC) test_get_runtime,
-		(TESTFUNC) test_load_runtime
-	};
-	runTests(tests, 3);
+	TESTFUNCS tests = initTests();
+	addTest(&tests, test_get_clr);
+	addTest(&tests, test_get_runtime);
+	addTest(&tests, test_load_runtime);
+	runTests(&tests);
+	freeTests(&tests);
 	return S_OK;
 }
 #endif
