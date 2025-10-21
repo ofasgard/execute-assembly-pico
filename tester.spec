@@ -15,7 +15,7 @@ x64:
 	
 	# Merge in libraries.
 	mergelib "lib/libtcg/libtcg.x64.zip"
-	mergelib "lib/libcpltest/libcpltest.x64.zip"
+	mergelib "lib/LibCPLTest/libcpltest.x64.zip"
 	
 	# Export as bytes and link as "my_pico".
 	export

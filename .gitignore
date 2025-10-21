@@ -1,7 +1,7 @@
 crystal-palace/
 lib/libtcg/bin
 lib/libtcg/*.zip
-lib/libcpltest/bin
-lib/libcpltest/*.zip
+lib/LibCPLTest/bin
+lib/LibCPLTest/*.zip
 bin/
 out/
