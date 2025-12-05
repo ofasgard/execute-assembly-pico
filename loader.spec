@@ -18,7 +18,8 @@ x64:
 	link "my_pico"
 	
 	# Load the .NET assembly and link as "my_assembly".
-	load "bin/Rubeus.exe"
+	resolve "%ASSEMBLY_PATH"
+	load %ASSEMBLY_PATH
 	preplen
 	link "my_assembly"
 	
