@@ -24,6 +24,12 @@ HRESULT (*EXECUTE_ASSEMBLY_PICO)(char *assembly, size_t assembly_len, WCHAR *arg
 
 The first two arguments should contain a pointer to a raw .NET assembly and its size. The second two arguments are used to pass string parameters to the assembly when it is invoked.
 
+## Capturing Output
+
+This PICO just invoke the assembly with the arguments you provided. It doesn't make any attempt to capture the output. 
+
+If you need to provide input via STDIN or capture the output from STDOUT, you should modify your loader to use WIN32 API calls like `CreatePipe()` and `SetStdHandle()` and connnect the standard I/O devices for your process to an anonymous pipe. Then you can read from and write to it as usual.
+
 ## Credits
 
 - [Raphael Mudge](https://tradecraftgarden.org/crystalpalace.html) for Crystal Palace and LibTCG.
