@@ -6,11 +6,11 @@ A PICO for Crystal Palace that implements native CLR hosting to execute an appen
 
 ## Building
 
-You will need MinGW GCC, the zip utility, and a `crystal-palace` directory containing the CPL executables needed to link the project. Note that the example configuration expects to find a Rubeus assembly at `bin/Rubeus.exe`, which you will have to provide yourself.
+You will need MinGW GCC, the zip utility, and a `crystal-palace` directory containing the CPL executables needed to link the project. Modify `config.spec` to specify the .NET assembly you want to link with the project and the commandline arguments you want to pass.
 
-To build the PICO by itself, run `make pico`. To build the example runner and link it with the PICO, run `make runner`.
+To build the PICO by itself (as a COFF), run `make pico`. To build the example runner and link it with the PICO, run `make runner`.
 
-The example runner is written to `out/runner.bin`, and it invokes the appended Rubeus assembly to execute "asktgt" with some generic dummy creds when you execute it:
+The example runner is written to `out/runner.bin`. The default configuration invokes an appended Rubeus assembly to execute "asktgt" with some generic dummy creds when you execute it:
 
 ![A screenshot of the PICO in action, executing an appended Rubeus assembly](img/execute-assembly-1.png)
 
@@ -23,15 +23,6 @@ HRESULT (*EXECUTE_ASSEMBLY_PICO)(char *assembly, size_t assembly_len, WCHAR *arg
 ```
 
 The first two arguments should contain a pointer to a raw .NET assembly and its size. The second two arguments are used to pass string parameters to the assembly when it is invoked.
-
-## Configuring the Runner
-
-The example runner is mostly intended to demonstrate the functionality of the PICO, but you can tweak it to invoke other assemblies if desired. To do so:
-
-- Adjust `config.spec` with the correct path to your desired .NET assembly.
-- Adjust `runner.c` to change the hardcoded arguments passed to the PICO by the `go()` function.
-
-Then run `make runner` again to build your PIC shellcode.
 
 ## Credits
 
